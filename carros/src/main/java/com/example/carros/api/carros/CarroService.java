@@ -3,6 +3,8 @@ package com.example.carros.api.carros;
 
 import com.example.carros.api.infra.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -18,15 +20,9 @@ public class CarroService {
     @Autowired
     public CarroRepository carroRepository;
 
-    public List<CarroDTO> getCarros(){
-        List<Carro> carros = carroRepository.findAll();
-        List<CarroDTO> list = new ArrayList<>();
-
-        for(Carro c: carros){
-            list.add(CarroDTO.create(c));
-        }
+    public List<CarroDTO> getCarros(Pageable pageable) {
+        List<CarroDTO> list = carroRepository.findAll(pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
         return list;
-        //List<CarroDTO> list =carros.stream().map(c -> new CarroDTO(c)).collect((Collectors.toList());
     }
    // public List<Carro> getCarrosFake(){
    //     List<Carro> carros = new ArrayList<>();
@@ -37,15 +33,15 @@ public class CarroService {
     //    return carros;
     //}
 
-    public CarroDTO getCarroById(long id) {
+    public CarroDTO getCarroById(long id ) {
         Optional<Carro> carro = carroRepository.findById(id);
         return carro.map(CarroDTO::create).orElseThrow( () -> new ObjectNotFoundException("Carro não encontrado"));
 
     }
 
-    public List<CarroDTO> getCarroByTipo(String tipo) {
+    public List<CarroDTO> getCarroByTipo(String tipo , Pageable pageable) {
 
-        return carroRepository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
+        return carroRepository.findByTipo(tipo, pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
     public CarroDTO save(Carro carro) {
