@@ -1,5 +1,7 @@
 package com.example.carros.domain;
 
+
+import lombok.*;
 import org.hibernate.annotations.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,41 +13,21 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories(basePackages = "com.example.carros.domain")
 @Entity
+@Data
 public class Carro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nome;
     private String tipo;
+    private String descricao;
+    private String urlFoto;
+    private String urlVideo;
+    private String latitude;
+    private String longitude;
 
 
-    public Carro(){}
-    public Carro(long id , String nome){
-        this.id = id;
-        this.nome = nome;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 }

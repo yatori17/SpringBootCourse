@@ -7,5 +7,5 @@ import java.util.List;
 public interface CarroRepository extends JpaRepository<Carro, Long> {
 
 
-    Iterable<Carro> findByTipo(String tipo);
+    List<Carro> findByTipo(String tipo);
 }

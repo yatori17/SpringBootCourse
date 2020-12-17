@@ -1,6 +1,8 @@
 package com.example.carros.domain;
 
 
+import com.example.carros.domain.dto.CarroDTO;
+import com.example.carros.api.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +14,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CarroService {
@@ -19,34 +22,45 @@ public class CarroService {
     @Autowired
     public CarroRepository carroRepository;
 
-    public Iterable<Carro> getCarros(){
-        return carroRepository.findAll();
+    public List<CarroDTO> getCarros(){
+        List<Carro> carros = carroRepository.findAll();
+        List<CarroDTO> list = new ArrayList<>();
+
+        for(Carro c: carros){
+            list.add(CarroDTO.create(c));
+        }
+        return list;
+        //List<CarroDTO> list =carros.stream().map(c -> new CarroDTO(c)).collect((Collectors.toList());
+    }
+   // public List<Carro> getCarrosFake(){
+   //     List<Carro> carros = new ArrayList<>();
+   //     carros.add(new Carro( 1L, "Fusca"));
+   //     carros.add(new Carro( 2L, "Chevette"));
+   //     carros.add(new Carro( 3L, "NaoseinomedoCarro"));
+
+    //    return carros;
+    //}
+
+    public CarroDTO getCarroById(long id) {
+        Optional<Carro> carro = carroRepository.findById(id);
+        return carro.map(CarroDTO::create).orElseThrow( () -> new ObjectNotFoundException("Carro não encontrado"));
 
     }
-    public List<Carro> getCarrosFake(){
-        List<Carro> carros = new ArrayList<>();
-        carros.add(new Carro( 1L, "Fusca"));
-        carros.add(new Carro( 2L, "Chevette"));
-        carros.add(new Carro( 3L, "NaoseinomedoCarro"));
 
-        return carros;
+    public List<CarroDTO> getCarroByTipo(String tipo) {
+
+        return carroRepository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
-    public Optional<Carro> getCarroById(long id) {
-        return carroRepository.findById(id);
+    public CarroDTO save(Carro carro) {
+       // Assert.isNull(carro.getId(), "Nao foi possivel inserir o registro" );
+
+        return CarroDTO.create(carroRepository.save(carro));
     }
 
-    public Iterable<Carro> getCarroByTipo(String tipo) {
-        return carroRepository.findByTipo(tipo);
-    }
-
-    public Carro save(Carro carro) {
-        return carroRepository.save((carro));
-    }
-
-    public Carro update(Carro carro, Long id) {
+    public CarroDTO update(Carro carro, Long id) {
         Assert.notNull(id, "Não foi possível atualizar o registro");
-        Optional<Carro> optional = getCarroById(id);
+        Optional<Carro> optional = carroRepository.findById(id);
         if (optional.isPresent()) {
             Carro c1 = optional.get(); //retorna o objeto dentro de optional
             c1.setNome(carro.getNome());
@@ -54,17 +68,13 @@ public class CarroService {
             System.out.println("Carro de id:" + c1.getId());
 
             carroRepository.save(c1);
-            return c1;
+            return CarroDTO.create(c1);
         } else {
-            throw new RuntimeException("Não foi possível atualizar o registro!");
+            return  null;
         }
     }
 
     public void delete(Long id) {
-        Assert.notNull(id, "Não foi possível excluir o registro");
-        Optional<Carro> optional = getCarroById(id);
-        if(optional.isPresent()){
             carroRepository.deleteById(id);
         }
-    }
 }
