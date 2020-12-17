@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,6 +48,7 @@ public class CarrosController {
     }
 
     @PostMapping
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity post(@RequestBody Carro carro) {
 
             CarroDTO c = carroService.save(carro);
