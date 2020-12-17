@@ -1,12 +1,11 @@
-package com.example.carros.api.security;
+package com.example.carros.api.infra.security;
 
-import com.example.carros.domain.User;
-import com.example.carros.domain.UserRepository;
+import com.example.carros.api.users.User;
+import com.example.carros.api.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service(value="userDetailsService")

@@ -14,10 +14,6 @@ public class IndexController {
         return "API dos Carros";
     }
 
-    //Detalhes do usuario
-    @GetMapping("/userInfo")
-    public UserDetails userInfo(@AuthenticationPrincipal UserDetails user) { //Injetar userdetails
-        return user;
-    }
+
 
 }

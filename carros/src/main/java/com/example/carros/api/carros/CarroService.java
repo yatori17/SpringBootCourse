@@ -1,12 +1,8 @@
-package com.example.carros.domain;
+package com.example.carros.api.carros;
 
 
-import com.example.carros.domain.dto.CarroDTO;
-import com.example.carros.api.exception.ObjectNotFoundException;
+import com.example.carros.api.infra.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
